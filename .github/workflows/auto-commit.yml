@@ -1,0 +1,39 @@
+name: Auto Commit
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '35 0 8 4 *'
+    - cron: '46 2 8 4 *'
+    - cron: '55 5 8 4 *'
+    - cron: '51 7 8 4 *'
+    - cron: '54 8 8 4 *'
+    - cron: '54 11 8 4 *'
+    - cron: '38 13 8 4 *'
+    - cron: '36 15 8 4 *'
+    - cron: '39 16 8 4 *'
+    - cron: '16 19 8 4 *'
+    - cron: '13 20 8 4 *'
+    - cron: '24 22 8 4 *'
+
+jobs:
+  auto-commit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      - name: Create Single Change
+        run: |
+          node ./auto_commit_script.js
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git add .
+          git commit -m "Auto commit [$(date -u)]"
+          git push
