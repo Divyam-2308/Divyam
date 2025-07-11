@@ -1,0 +1,100 @@
+name: Auto Commit
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '12 0 11 7 *'
+    - cron: '23 3 11 7 *'
+    - cron: '14 5 11 7 *'
+    - cron: '53 7 11 7 *'
+    - cron: '47 9 11 7 *'
+    - cron: '9 10 11 7 *'
+    - cron: '58 13 11 7 *'
+    - cron: '49 15 11 7 *'
+    - cron: '50 17 11 7 *'
+    - cron: '49 18 11 7 *'
+    - cron: '52 1 12 7 *'
+    - cron: '22 2 12 7 *'
+    - cron: '42 5 12 7 *'
+    - cron: '38 7 12 7 *'
+    - cron: '36 9 12 7 *'
+    - cron: '34 11 12 7 *'
+    - cron: '3 13 12 7 *'
+    - cron: '24 15 12 7 *'
+    - cron: '23 17 12 7 *'
+    - cron: '1 18 12 7 *'
+    - cron: '55 1 13 7 *'
+    - cron: '48 3 13 7 *'
+    - cron: '37 4 13 7 *'
+    - cron: '6 7 13 7 *'
+    - cron: '36 8 13 7 *'
+    - cron: '49 10 13 7 *'
+    - cron: '48 13 13 7 *'
+    - cron: '24 14 13 7 *'
+    - cron: '27 16 13 7 *'
+    - cron: '32 18 13 7 *'
+    - cron: '59 1 14 7 *'
+    - cron: '1 2 14 7 *'
+    - cron: '59 4 14 7 *'
+    - cron: '40 7 14 7 *'
+    - cron: '4 9 14 7 *'
+    - cron: '23 10 14 7 *'
+    - cron: '41 12 14 7 *'
+    - cron: '10 14 14 7 *'
+    - cron: '47 17 14 7 *'
+    - cron: '55 19 14 7 *'
+    - cron: '22 1 15 7 *'
+    - cron: '7 3 15 7 *'
+    - cron: '45 5 15 7 *'
+    - cron: '38 7 15 7 *'
+    - cron: '15 9 15 7 *'
+    - cron: '34 11 15 7 *'
+    - cron: '49 13 15 7 *'
+    - cron: '55 14 15 7 *'
+    - cron: '13 16 15 7 *'
+    - cron: '34 19 15 7 *'
+    - cron: '4 1 16 7 *'
+    - cron: '38 2 16 7 *'
+    - cron: '38 5 16 7 *'
+    - cron: '21 6 16 7 *'
+    - cron: '6 8 16 7 *'
+    - cron: '33 10 16 7 *'
+    - cron: '20 12 16 7 *'
+    - cron: '3 14 16 7 *'
+    - cron: '36 16 16 7 *'
+    - cron: '48 19 16 7 *'
+    - cron: '42 0 17 7 *'
+    - cron: '37 3 17 7 *'
+    - cron: '33 4 17 7 *'
+    - cron: '26 7 17 7 *'
+    - cron: '10 9 17 7 *'
+    - cron: '23 11 17 7 *'
+    - cron: '14 13 17 7 *'
+    - cron: '44 14 17 7 *'
+    - cron: '16 17 17 7 *'
+    - cron: '36 18 17 7 *'
+
+jobs:
+  auto-commit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      - name: Set Git Identity
+        run: |
+          git config --global user.name "Divyam Jain"
+          git config --global user.email "jaindivyam200@gmail.com"
+
+      - name: Create Single Change
+        run: |
+          node ./auto_commit_script.js
+          git add .
+          git commit -m "Auto commit [$(date -u)]"
+          git push
